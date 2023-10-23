@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class MovieController extends Controller
 {
@@ -19,7 +20,7 @@ class MovieController extends Controller
 
     public function store(Request $request)
     {
-        $request->except('_token');
+        $data = $request->except('_token');
 
         $request->validate([
             'title' => 'required|string',
@@ -35,6 +36,16 @@ class MovieController extends Controller
             'duration' => 'required|string',
             'featured' => 'required',
         ]);
-        // dd($data);
+
+        $smallThumbnail = $request->small_thumbnail;
+        $largeThumbnail = $request->large_thumbnail;
+
+        $originalSmallThumbnailName = Str::random(10).$smallThumbnail->getClientOriginalName();
+        $originalLargeThumbnailName = Str::random(10).$largeThumbnail->getClientOriginalName();
+
+        $smallThumbnail->storeAs('public/thumbnails/small', $originalSmallThumbnailName);
+        $largeThumbnail->storeAs('public/thumbnails/large', $originalLargeThumbnailName);
+
+        dd($originalLargeThumbnailName);
     }
 }
