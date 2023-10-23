@@ -19,6 +19,14 @@
                 </div>
             </div>
 
+            {{-- NOTE: show alert --}}
+            @if (session()->has('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+
             <div class="row">
                 <div class="col-md-12">
                     <table id="example2" class="table table-bordered table-hover">
